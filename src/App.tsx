@@ -10,7 +10,7 @@ const App = () => {
   const [formData, setFormData] = useState<Entry>({
     name: "",
     email: "",
-    course: "react"
+    course: ""
   })
   const [errors, setErrors] = useState<Partial<Entry>>({})
   const [entries, setEntries] = useState<Entry[]>([])
@@ -28,6 +28,9 @@ const App = () => {
     if (!formData.name.trim()) newErrors.name = "Name is required."
     if (!formData.email.includes("@") || !formData.email.includes(".")) {
     newErrors.email = "Enter a valid email.";
+    if (!formData.course.trim()) {
+    newErrors.course = "Please select a course.";
+  }
 }
     return newErrors
   }
@@ -40,7 +43,7 @@ const App = () => {
       return
     }
     setEntries(prevEntries => [...prevEntries, formData])
-    setFormData({ name: "", email: "", course: "react" })
+    setFormData({ name: "", email: "", course: "" })
     setErrors({})
   }
 
@@ -77,12 +80,18 @@ const App = () => {
           {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
         </div>
 
-        <select className={inputStyle} name="course" value={formData.course} onChange={handleChange}>
+        <select
+          className={inputStyle}
+          name="course"
+          value={formData.course}
+          onChange={handleChange}
+        >
           <option value="" disabled>Choose one</option>
           <option value="react">React</option>
           <option value="javascript">JavaScript</option>
           <option value="typescript">TypeScript</option>
         </select>
+        {errors.course && <p className="text-red-500 text-sm mt-1">{errors.course}</p>}
 
         <button className="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-600 transition-colors" type="submit">
           Submit
